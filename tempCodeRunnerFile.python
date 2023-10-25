@@ -1,0 +1,47 @@
+class Product:
+    def __init__(self, code, name, sale_price, manufacture_cost, stock_level):
+        self.code = code
+        self.name = name
+        self.sale_price = sale_price
+        self.manufacture_cost = manufacture_cost
+        self.stock_level = stock_level
+
+# Function to get product information from the user
+def get_product_info():
+    try:
+        code = int(input("Enter Product Code (100 to 1000): "))
+        name = input("Enter Product Name: ")
+        sale_price = float(input("Enter Product Sale Price (> 0): "))
+        manufacture_cost = float(input("Enter Product Manufacture Cost (> 0): "))
+        stock_level = int(input("Enter Stock Level (> 0): "))
+        
+        # Validate input
+        if 100 <= code <= 1000 and sale_price > 0 and manufacture_cost > 0 and stock_level > 0:
+            return Product(code, name, sale_price, manufacture_cost, stock_level)
+        else:
+            print("Invalid input. Please try again.")
+            return get_product_info()
+    except ValueError:
+        print("Invalid input. Please enter a valid number.")
+        return get_product_info()
+
+# Main function
+def main():
+    products = []  # List to store products
+    
+    while True:
+        print("\nEnter Product Information:")
+        product = get_product_info()  # Get product information from the user
+        products.append(product)  # Add product to the list
+        
+        choice = input("Do you want to enter another product? (yes/no): ")
+        if choice.lower() != 'yes':
+            break
+
+    # Display entered products
+    print("\nEntered Products:")
+    for product in products:
+        print(f"Code: {product.code}, Name: {product.name}, Sale Price: {product.sale_price}, Manufacture Cost: {product.manufacture_cost}, Stock Level: {product.stock_level}")
+
+if __name__ == "__main__":
+    main()
