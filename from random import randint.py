@@ -12,25 +12,22 @@ class Product():
 
     def sales_sim(self):
         sold = randint(self.units - 10, self.units + 10)
+        if sold < 0:
+            sold = 0
         return sold
     
     def generate_stock_statement(self, months):
         total_profit = 0
+        # Creating list for stock statement
         stock_statement = []
-        for month in range(months):    
+        for month in range(months):
             sold = self.sales_sim()
             units = self.units
-            self.stock = self.stock + self.units - sold
-            if self.stock < 0:
-                print("\nStock level has dipped below zero in month ",month + 1,". Stopping simulation.")
-                break
-
+            self.stock = max(0, self.stock + self.units - sold)
             profit = (sold * self.price) - (units * self.cost)
             total_profit += profit
-            rounded_profit = round(total_profit,2)
-            
-            stock_statement.append(f"\nMonth {month + 1}:\n    Units Manufactured : {units} Units\n    Units Sold: {sold}\n    Stock Level: {self.stock}")
-        return stock_statement, total_profit, rounded_profit
+            stock_statement.append(f"\nMonth {month + 1}:\n    Units Sold: {sold}\n    Stock Level: {self.stock}\n    Profit/Loss: {profit}")
+        return stock_statement, total_profit
     
 
 def main():
@@ -54,21 +51,12 @@ def main():
             
             product = Product(code, name, stock, price, cost, units)
             months = 12
-            stock_statement, total_profit, rounded_profit = product.generate_stock_statement(months)
+            stock_statement, total_profit = product.generate_stock_statement(months)
             
             for statement in stock_statement:
                 print(statement)
 
-            print("\nTotal Net Profit/Loss: $", rounded_profit, " CAD")
-            
-            while True:
-                playAgain = input("Would you like to generate another product prediction (y/n)")
-               
-                if playAgain == "y":
-                    main()
-                    break
-                else:
-                    print("Goodbye") 
+            print(f"\nTotal Net Profit/Loss: {total_profit} CAD")
 
         else:
             print("One or more of the values entered is incorrect. Please try again.")
