@@ -68,7 +68,8 @@ def main():
                     main()
                     break
                 else:
-                    print("Goodbye") 
+                    print("Goodbye")
+                    quit() 
 
         else:
             print("One or more of the values entered is incorrect. Please try again.")
